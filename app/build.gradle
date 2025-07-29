@@ -1,0 +1,49 @@
+plugins {
+    id 'application'
+    id 'java'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // Use JUnit Jupiter for testing.
+    testImplementation libs.junit.jupiter
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // This dependency is used by the application.
+    implementation libs.guava
+
+}
+javafx {
+    sdk = '/home/relja/javafx-sdk24/javafx-sdk-24.0.1' // no trailing slash, absolute path
+    // version = '17'
+    // platform = 'linux' 
+    // configuration = 'compileOnly'
+    modules = [ 'javafx.controls', 'javafx.fxml' ] // modules you need
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(22)
+    }
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'org.example.App'
+}
+
+tasks.named('test') {
+    // Use JUnit Platform for unit tests.
+    useJUnitPlatform()
+}
