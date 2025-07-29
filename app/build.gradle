@@ -23,14 +23,16 @@ dependencies {
 
     // This dependency is used by the application.
     implementation libs.guava
-
+    implementation "org.openjfx:javafx-media:21"
+    implementation "org.openjfx:javafx-controls:21"
+    implementation "org.openjfx:javafx-fxml:21"
 }
 javafx {
     sdk = '/home/relja/javafx-sdk24/javafx-sdk-24.0.1' // no trailing slash, absolute path
-    // version = '17'
+    version = '21'
     // platform = 'linux' 
     // configuration = 'compileOnly'
-    modules = [ 'javafx.controls', 'javafx.fxml' ] // modules you need
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.media' ] // modules you need
 }
 java {
     toolchain {
