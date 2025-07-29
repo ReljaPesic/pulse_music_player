@@ -1,30 +1,31 @@
 package org.example;
 
+import javax.sound.sampled.Clip;
+
 public class Song {
   private String title;
   private String artist;
   private int duration;
+  private int durationPassed;
+  private Clip clip;
 
-  public Song(String title, String artist, int duration) {
+  public Song(String title, String artist, int duration, Clip clip) {
     this.title = title;
     this.artist = artist;
     this.duration = duration;
+    this.durationPassed = 0;
+    this.clip = clip;
   }
 
-  public String getTitle() {
-    return title;
+  public void playsong() {
+    if (clip != null) {
+      clip.start();
+    }
   }
 
-  public String getArtist() {
-    return artist;
-  }
-
-  public int getDuration() {
-    return duration;
-  }
-
-  @Override
-  public String toString() {
-    return "Song [title=" + title + ", artist=" + artist + "]";
+  public void stopsong() {
+    if (clip != null && clip.isRunning()) {
+      clip.stop();
+    }
   }
 }

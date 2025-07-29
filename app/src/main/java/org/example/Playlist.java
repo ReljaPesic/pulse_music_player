@@ -20,7 +20,6 @@ public class Playlist {
   public void addSong(Song song) {
     songs.add(song);
     songCount++;
-    System.out.println("Added song: " + song.getTitle() + " to playlist: " + name);
   }
 
   public void displaySongs() {
