@@ -1,41 +1,24 @@
 package org.example;
 
-import javax.sound.sampled.Clip;
+import java.nio.file.Path;
 
 public class Song {
   private String title;
   private String artist;
-  private String album;
-  private int duration;
-  private int durationPassed;
-  private Clip clip;
+  private Path path;
 
-  public Song(String title, String artist, int duration, Clip clip) {
+  public Song(String title, String artist, Path path) {
     this.title = title;
     this.artist = artist;
-    this.duration = duration;
-    this.durationPassed = 0;
-    this.clip = clip;
-  }
-
-  public void playsong() {
-    if (clip != null) {
-      clip.start();
-    }
-  }
-
-  public void stopsong() {
-    if (clip != null && clip.isRunning()) {
-      clip.stop();
-    }
-  }
-
-  public boolean isPlaying() {
-    return clip != null && clip.isRunning();
+    this.path = path;
   }
 
   @Override
   public String toString() {
     return title + "-" + artist;
+  }
+
+  public Path getPath() {
+    return path;
   }
 }
