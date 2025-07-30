@@ -30,7 +30,11 @@ public class Controller implements Initializable {
 
   @FXML
   public void onPlayButton() {
-    player.play(listView.getSelectionModel().getSelectedItem());
+    if (player.isPaused()) {
+      player.resume(); // Resume if paused
+    } else {
+      player.play(song);
+    }
   }
 
   @FXML
@@ -96,6 +100,7 @@ public class Controller implements Initializable {
 
     listView.getSelectionModel().selectedItemProperty().addListener((_, _, newSelectedSong) -> {
       player.play(newSelectedSong); // Play the selected song
+      song = newSelectedSong; // Update the current song
     });
   }
 }

@@ -1,12 +1,9 @@
 package org.example;
 
 import java.io.File;
-import java.io.IOException;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Player {
   private Clip clip;
@@ -30,12 +27,8 @@ public class Player {
       clip = AudioSystem.getClip();
       clip.open(audioInputStream);
       clip.start();
-    } catch (UnsupportedAudioFileException e) {
-      System.err.println("Unsupported audio file: " + e.getMessage());
-    } catch (IOException e) {
-      System.err.println("IO error while accessing the file: " + e.getMessage());
     } catch (Exception e) {
-      System.err.println("Some other error playing file: " + e.getMessage());
+      System.err.println("Some error playing file: " + e.getMessage());
     }
   }
 
@@ -45,10 +38,17 @@ public class Player {
     }
   }
 
+  public void resume() {
+    if (clip != null && !clip.isRunning()) {
+      clip.start();
+    }
+  }
+
   public void stop() {
     if (clip != null && clip.isRunning()) {
       clip.stop();
       clip.close();
+      clip = null; // Clear the clip reference
     }
   }
 
@@ -56,9 +56,7 @@ public class Player {
     return clip != null && clip.isRunning();
   }
 
-  public void resume() {
-    if (clip != null && !clip.isRunning()) {
-      clip.start();
-    }
+  public boolean isPaused() {
+    return clip != null && !clip.isRunning();
   }
 }
