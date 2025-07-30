@@ -30,6 +30,10 @@ public class Song {
     }
   }
 
+  public boolean isPlaying() {
+    return clip != null && clip.isRunning();
+  }
+
   @Override
   public String toString() {
     return title + "-" + artist;

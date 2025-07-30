@@ -22,27 +22,34 @@ import javafx.scene.control.ListView;
 public class Controller implements Initializable {
   private Song song;
   private Playlist playlist;
+  private int currentSongIndex = 0;
+
   @FXML
-  private ListView<String> listView;
+  private ListView<Song> listView;
 
   @FXML
   public void onPlayButton() {
-    // playlist.playCurrentSong();
+    if (song != null) {
+      song.playsong();
+    } else {
+      playlist.playSongAtIndex(currentSongIndex);
+    }
   }
 
   @FXML
   public void onPauseButton() {
-    // if (song != null) {
-    // song.stopsong();
-    // }
+    if (song != null && song.isPlaying()) {
+      song.stopsong();
+    }
   }
 
   @FXML
   public void onStopButton() {
-    // if (song != null) {
-    // song.stopsong();
-    // song = null; // Reset the song to null after stopping
-    // }
+    if (song != null && song.isPlaying()) {
+      song.stopsong();
+      song = null; // Clear the current song
+      currentSongIndex = 0;
+    }
   }
 
   private Song loadSong(String path) {
@@ -81,13 +88,22 @@ public class Controller implements Initializable {
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-    ObservableList<String> observableList = FXCollections.observableArrayList();
+    ObservableList<Song> observableList = FXCollections.observableArrayList();
     loadPlaylistFromFile();
     System.out.println("Playlist loaded with " + playlist);
-    for (Song song : playlist.getSongs()) {
-      observableList.add(song.toString());
-    }
+    observableList.addAll(playlist.getSongs());
     listView.setItems(observableList);
+    listView.getSelectionModel().selectedItemProperty().addListener((_, oldValue, newValue) -> {
+      if (oldValue != null && newValue != null && oldValue.isPlaying()) {
+        oldValue.stopsong(); // Stop the previously selected song
+        newValue.playsong(); // Play the newly selected song
+      }
+      if (newValue != null) {
+        newValue.playsong(); // Play the newly selected song
+      }
+      song = newValue; // Update the current song
+      currentSongIndex = listView.getSelectionModel().getSelectedIndex();
+    });
   }
 
 }

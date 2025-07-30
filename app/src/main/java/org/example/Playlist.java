@@ -44,6 +44,16 @@ public class Playlist {
     }
   }
 
+  public void playSongAtIndex(int index) {
+    if (index >= 0 && index < songs.size()) {
+      currentSongIndex = index;
+      songs.get(currentSongIndex).playsong();
+    } else {
+      // if no song is selected, play the first song
+      songs.get(0).playsong();
+    }
+  }
+
   public void shuffle() {
     java.util.Collections.shuffle(songs);
   }
