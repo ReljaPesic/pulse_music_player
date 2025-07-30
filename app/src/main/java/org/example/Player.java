@@ -22,7 +22,7 @@ public class Player {
     return instance;
   }
 
-  private void play(Song song) {
+  public void play(Song song) {
     stop(); // Stop any currently playing song
     try {
       File file = new File(song.getPath().toString());
@@ -49,6 +49,16 @@ public class Player {
     if (clip != null && clip.isRunning()) {
       clip.stop();
       clip.close();
+    }
+  }
+
+  public boolean isPlaying() {
+    return clip != null && clip.isRunning();
+  }
+
+  public void resume() {
+    if (clip != null && !clip.isRunning()) {
+      clip.start();
     }
   }
 }

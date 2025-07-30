@@ -23,42 +23,37 @@ public class Controller implements Initializable {
   private Song song;
   private Playlist playlist;
   private int currentSongIndex = 0;
+  private Player player;
 
   @FXML
   private ListView<Song> listView;
 
   @FXML
   public void onPlayButton() {
-    if (song != null) {
-      song.playsong();
-    } else {
-      playlist.playSongAtIndex(currentSongIndex);
-    }
+    player.play(listView.getSelectionModel().getSelectedItem());
   }
 
   @FXML
   public void onPauseButton() {
-    if (song != null && song.isPlaying()) {
-      song.stopsong();
+    if (player.isPlaying()) {
+      player.pause();
     }
   }
 
   @FXML
   public void onStopButton() {
-    if (song != null && song.isPlaying()) {
-      song.stopsong();
-      song = null; // Clear the current song
-      currentSongIndex = 0;
+    if (player.isPlaying()) {
+      player.stop();
     }
   }
 
-  private Song loadSong(String path) {
-    File file = new File(path);
+  private Song loadSong(Path path) {
+    File file = new File(path.toString());
     Song song = null;
     try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file)) {
       Clip clip = AudioSystem.getClip();
       clip.open(audioInputStream);
-      song = new Song(file.getName(), file.getAbsolutePath(), 300, clip);
+      song = new Song(file.getName(), file.getAbsolutePath(), path);
     } catch (UnsupportedAudioFileException e) {
       System.err.println("Unsupported audio file: " + e.getMessage());
     } catch (IOException e) {
@@ -77,7 +72,7 @@ public class Controller implements Initializable {
         paths.filter(Files::isRegularFile)
             .forEach(path -> {
               System.out.println("Loading song from: " + path);
-              Song song = loadSong(path.toString());
+              Song song = loadSong(path);
               playlist.addSong(song);
             });
       } catch (IOException e) {
@@ -88,22 +83,19 @@ public class Controller implements Initializable {
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-    ObservableList<Song> observableList = FXCollections.observableArrayList();
+    // Initialize player
+    player = Player.getInstance();
+
+    // load the playlist from the file
+    // TODO change to load to json file
     loadPlaylistFromFile();
-    System.out.println("Playlist loaded with " + playlist);
-    observableList.addAll(playlist.getSongs());
+
+    ObservableList<Song> observableList = FXCollections.observableArrayList();
+    observableList.addAll(playlist.getSongsInPlaylist());
     listView.setItems(observableList);
-    listView.getSelectionModel().selectedItemProperty().addListener((_, oldValue, newValue) -> {
-      if (oldValue != null && newValue != null && oldValue.isPlaying()) {
-        oldValue.stopsong(); // Stop the previously selected song
-        newValue.playsong(); // Play the newly selected song
-      }
-      if (newValue != null) {
-        newValue.playsong(); // Play the newly selected song
-      }
-      song = newValue; // Update the current song
-      currentSongIndex = listView.getSelectionModel().getSelectedIndex();
+
+    listView.getSelectionModel().selectedItemProperty().addListener((_, _, newSelectedSong) -> {
+      player.play(newSelectedSong); // Play the selected song
     });
   }
-
 }

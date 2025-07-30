@@ -4,13 +4,11 @@ import java.util.List;
 
 public class Playlist {
   private String name;
-  private List<Song> songs;
-  private int currentSongIndex;
+  private List<Song> songsInPlaylist;
 
   public Playlist(String name, List<Song> songs) {
     this.name = name;
-    this.songs = songs;
-    this.currentSongIndex = 0;
+    this.songsInPlaylist = songs;
   }
 
   public Playlist() {
@@ -18,52 +16,31 @@ public class Playlist {
   }
 
   public Playlist(Playlist playlist) {
-    this(playlist.name, playlist.songs);
-  }
-
-  public void playCurrentSong() {
-    if (currentSongIndex < songs.size()) {
-      Song currentSong = songs.get(currentSongIndex);
-      currentSong.playsong();
-    } else {
-      System.out.println("No song to play.");
-    }
+    this(playlist.name, playlist.songsInPlaylist);
   }
 
   public void addSong(Song song) {
-    songs.add(song);
+    songsInPlaylist.add(song);
   }
 
   public void removeSong(Song song) {
-    songs.remove(song);
-  }
-
-  public void displaySongs() {
-    for (Song song : songs) {
-      System.out.println(song);
-    }
-  }
-
-  public void playSongAtIndex(int index) {
-    if (index >= 0 && index < songs.size()) {
-      currentSongIndex = index;
-      songs.get(currentSongIndex).playsong();
-    } else {
-      // if no song is selected, play the first song
-      songs.get(0).playsong();
-    }
+    songsInPlaylist.remove(song);
   }
 
   public void shuffle() {
-    java.util.Collections.shuffle(songs);
+    java.util.Collections.shuffle(songsInPlaylist);
   }
 
-  public List<Song> getSongs() {
-    return songs;
+  public List<Song> getSongsInPlaylist() {
+    return songsInPlaylist;
   }
 
   @Override
   public String toString() {
-    return "Playlist " + name + " with " + songs;
+    StringBuilder sb = new StringBuilder("Playlist : " + name + "\n");
+    for (Song song : songsInPlaylist) {
+      sb.append(song.toString()).append("\n");
+    }
+    return sb.toString();
   }
 }
