@@ -4,4 +4,7 @@
 package org.example;
 
 class AppTest {
+  void simpleTest() {
+    assert true;
+  }
 }

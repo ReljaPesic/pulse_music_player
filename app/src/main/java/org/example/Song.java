@@ -5,6 +5,7 @@ import javax.sound.sampled.Clip;
 public class Song {
   private String title;
   private String artist;
+  private String album;
   private int duration;
   private int durationPassed;
   private Clip clip;
@@ -27,5 +28,10 @@ public class Song {
     if (clip != null && clip.isRunning()) {
       clip.stop();
     }
+  }
+
+  @Override
+  public String toString() {
+    return title + "-" + artist;
   }
 }
