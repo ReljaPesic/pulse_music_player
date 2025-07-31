@@ -46,7 +46,7 @@ public class Controller implements Initializable {
 
   @FXML
   public void onStopButton() {
-    if (player.isPlaying()) {
+    if (player.isPlaying() || player.isPaused()) {
       player.stop();
     }
   }

@@ -1,6 +1,9 @@
 package org.example;
 
-import java.io.File;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.nio.file.Files;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -21,9 +24,10 @@ public class Player {
 
   public void play(Song song) {
     stop(); // Stop any currently playing song
-    try {
-      File file = new File(song.getPath().toString());
-      AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+    try (
+        InputStream fis = Files.newInputStream(song.getPath());
+        BufferedInputStream bis = new BufferedInputStream(fis);
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bis);) {
       clip = AudioSystem.getClip();
       clip.open(audioInputStream);
       clip.start();
@@ -45,7 +49,7 @@ public class Player {
   }
 
   public void stop() {
-    if (clip != null && clip.isRunning()) {
+    if (clip != null) {
       clip.stop();
       clip.close();
       clip = null; // Clear the clip reference
