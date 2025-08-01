@@ -25,7 +25,7 @@ public class Player {
   public void play(Song song) {
     stop(); // Stop any currently playing song
     try (
-        InputStream fis = Files.newInputStream(song.getPath());
+        InputStream fis = Files.newInputStream(song.getPathToAudio());
         BufferedInputStream bis = new BufferedInputStream(fis);
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bis);) {
       clip = AudioSystem.getClip();
