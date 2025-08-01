@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
 
 public class Controller implements Initializable {
   private Song song;
@@ -19,31 +20,29 @@ public class Controller implements Initializable {
   private ListView<Song> listView;
 
   @FXML
+  private Slider timelineSlider;
+
+  @FXML
   public void onPlayButton() {
-    if (player.isPaused()) {
-      player.resume(); // Resume if paused
+    if (song != null) {
+      player.play(song); // Play the current song
     } else {
-      player.play(song);
+      System.out.println("No song selected to play.");
     }
   }
 
   @FXML
   public void onPauseButton() {
-    if (player.isPlaying()) {
-      player.pause();
-    }
+    player.pause(); // Pause the current song
   }
 
   @FXML
   public void onStopButton() {
-    if (player.isPlaying() || player.isPaused()) {
-      player.stop();
-    }
+    player.stop(); // Stop the current song
   }
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-    player = Player.getInstance();
     loader = Loader.getInstance();
 
     ObservableList<Song> observableList = FXCollections.observableArrayList();
@@ -57,5 +56,9 @@ public class Controller implements Initializable {
       player.play(newSelectedSong); // Play the selected song
       song = newSelectedSong; // Update the current song
     });
+  }
+
+  public void setPlayer(Player player) {
+    this.player = player;
   }
 }

@@ -1,66 +1,40 @@
 package org.example;
 
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.nio.file.Files;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import javafx.scene.media.MediaPlayer;
 
 public class Player {
-  private Clip clip;
-  private static Player instance;
-
-  private Player() {
-  }
-
-  public static Player getInstance() {
-    if (instance == null) {
-      instance = new Player();
-    }
-    return instance;
-  }
+  private MediaPlayer mediaPlayer;
 
   public void play(Song song) {
-    stop(); // Stop any currently playing song
-    try (
-        InputStream fis = Files.newInputStream(song.getPathToAudio());
-        BufferedInputStream bis = new BufferedInputStream(fis);
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bis);) {
-      clip = AudioSystem.getClip();
-      clip.open(audioInputStream);
-      clip.start();
-    } catch (Exception e) {
-      System.err.println("Some error playing file: " + e.getMessage());
+    if (mediaPlayer != null) {
+      mediaPlayer.stop();
+      mediaPlayer.dispose();
     }
+    mediaPlayer = new MediaPlayer(song.getMedia());
+    mediaPlayer.play();
   }
 
   public void pause() {
-    if (clip != null && clip.isRunning()) {
-      clip.stop();
+    if (mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+      mediaPlayer.pause();
     }
   }
 
   public void resume() {
-    if (clip != null && !clip.isRunning()) {
-      clip.start();
+    if (mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PAUSED) {
+      mediaPlayer.play();
     }
   }
 
   public void stop() {
-    if (clip != null) {
-      clip.stop();
-      clip.close();
-      clip = null; // Clear the clip reference
+    if (mediaPlayer != null) {
+      mediaPlayer.stop();
+      mediaPlayer.dispose();
+      mediaPlayer = null;
     }
   }
 
-  public boolean isPlaying() {
-    return clip != null && clip.isRunning();
-  }
-
-  public boolean isPaused() {
-    return clip != null && !clip.isRunning();
+  public MediaPlayer getMediaPlayer() {
+    return mediaPlayer;
   }
 }

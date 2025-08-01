@@ -27,7 +27,7 @@ javafx {
     sdk = '/home/relja/javafx-sdk24/javafx-sdk-24.0.1' 
     // platform = 'linux' 
     // configuration = 'compileOnly'
-    modules = [ 'javafx.controls', 'javafx.fxml' ] 
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.media' ] 
 }
 java {
     toolchain {

@@ -16,6 +16,10 @@ public class App extends Application {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout.fxml"));
     Parent root = loader.load();
 
+    Controller controller = loader.getController();
+    Player player = new Player();
+    controller.setPlayer(player);
+
     stage.setTitle("JavaFX Application");
     stage.setScene(new Scene(root, 800, 600));
     stage.show();
