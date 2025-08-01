@@ -15,9 +15,24 @@ public class Loader {
           "pathToAudio": "/home/relja/Desktop/pulse/app/build/resources/main/playlist/song1.wav"
         },
         {
+          "title": "Kao final novi uvod",
+          "artist": "Sins We Carry",
+          "pathToAudio": "/home/relja/Desktop/pulse/app/build/resources/main/playlist/SWC kao finalNOVI UVOD.wav"
+        },
+        {
+          "title": "Kao final",
+          "artist": "Sins We Carry",
+          "pathToAudio": "/home/relja/Desktop/pulse/app/build/resources/main/playlist/SWC kao final.wav"
+        },
+        {
           "title": "Song 2",
           "artist": "Sins We Carry",
           "pathToAudio": "/home/relja/Desktop/pulse/app/build/resources/main/playlist/uu jeaaa.wav"
+        },
+        {
+          "title": "grooveend",
+          "artist": "KMotherFuckingU",
+          "pathToAudio": "/home/relja/Desktop/pulse/app/build/resources/main/playlist/grooveend.wav"
         }
       ]
       """;
