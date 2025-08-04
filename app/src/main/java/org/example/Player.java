@@ -71,4 +71,14 @@ public class Player {
   public boolean isPaused() {
     return mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PAUSED;
   }
+
+  public boolean isPlaying() {
+    return mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING;
+  }
+
+  public void setVolume(double d) {
+    if (mediaPlayer != null) {
+      mediaPlayer.setVolume(d);
+    }
+  }
 }

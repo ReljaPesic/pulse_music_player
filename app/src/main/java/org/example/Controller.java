@@ -23,6 +23,8 @@ public class Controller implements Initializable {
   private ListView<Song> listView;
   @FXML
   private Slider timelineSlider;
+  @FXML
+  private Slider volumeSlider;
 
   @FXML
   public void onPlayButton() {
@@ -44,6 +46,7 @@ public class Controller implements Initializable {
   @FXML
   public void onStopButton() {
     player.stop(); // Stop the current song
+    timelineSlider.setValue(0); // Reset the slider to the start
   }
 
   @Override
@@ -62,6 +65,11 @@ public class Controller implements Initializable {
       player.play(newSelectedSong); // Play the selected song
       playerSliderBinder.bindSliderToPlayer(player, timelineSlider); // Bind the slider to the player
       song = newSelectedSong; // Update the current song
+    });
+
+    volumeSlider.setValue(100);
+    volumeSlider.valueProperty().addListener((_, _, newValue) -> {
+      player.setVolume(newValue.doubleValue() / 100.0); // Set volume based on slider value
     });
 
   }

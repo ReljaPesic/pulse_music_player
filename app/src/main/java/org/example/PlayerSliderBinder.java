@@ -20,15 +20,18 @@ public class PlayerSliderBinder {
       player.pause(); // Pause the player while dragging
     });
 
-    slider.setOnMousePressed(_ -> {
-      double newTime = slider.getValue();
-      player.seek(Duration.seconds(newTime));
-    });
-
     slider.setOnMouseReleased(_ -> {
       double newTime = slider.getValue();
       player.seek(Duration.seconds(newTime));
-      player.resume();
+      player.resume(); // Resume the player after dragging
+    });
+
+    slider.setOnMousePressed(_ -> {
+      double newTime = slider.getValue();
+      player.seek(Duration.seconds(newTime));
+      if (player.isPlaying()) {
+        player.resume(); // Pause the player while dragging
+      }
     });
 
     slider.valueChangingProperty().addListener((_, _, isChanging) -> {
