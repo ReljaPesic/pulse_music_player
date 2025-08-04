@@ -73,7 +73,7 @@
          <bottom>
             <VBox spacing="5.0" BorderPane.alignment="CENTER">
                <children>
-                  <Slider fx:id="timelineSlider" />
+                  <Slider fx:id="timelineSlider" min="0" max="100"/>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
                         <Button onAction="#onPlayButton" mnemonicParsing="false" text="▶" />

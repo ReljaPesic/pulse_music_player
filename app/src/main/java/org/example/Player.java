@@ -1,7 +1,14 @@
 package org.example;
 
+import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.ReadOnlyObjectPropertyBase;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
+import lombok.Getter;
 
+@Getter
 public class Player {
   private MediaPlayer mediaPlayer;
 
@@ -34,7 +41,34 @@ public class Player {
     }
   }
 
+  public void setOnReady(Runnable runnable) {
+    if (mediaPlayer != null) {
+      mediaPlayer.setOnReady(runnable);
+    }
+  }
+
+  public double getCurrentTime() {
+    if (mediaPlayer != null) {
+      return mediaPlayer.getCurrentTime().toSeconds();
+    }
+    return 0;
+  }
+
+  public double getTotalDuration() {
+    if (mediaPlayer != null) {
+      return mediaPlayer.getTotalDuration().toSeconds();
+    }
+    return 0;
+  }
+
   public MediaPlayer getMediaPlayer() {
-    return mediaPlayer;
+    return mediaPlayer != null ? mediaPlayer : null;
+  }
+
+  public ReadOnlyObjectProperty<Duration> currentTimeProperty() {
+    if (mediaPlayer != null) {
+      return mediaPlayer.currentTimeProperty();
+    }
+    return null;
   }
 }

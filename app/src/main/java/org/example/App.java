@@ -17,8 +17,8 @@ public class App extends Application {
     Parent root = loader.load();
 
     Controller controller = loader.getController();
-    Player player = new Player();
-    controller.setPlayer(player);
+    controller.setPlayer(new Player());
+    controller.setPlayerSliderBinder(new PlayerSliderBinder());
 
     stage.setTitle("JavaFX Application");
     stage.setScene(new Scene(root, 800, 600));

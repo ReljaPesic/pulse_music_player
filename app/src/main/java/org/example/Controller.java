@@ -10,15 +10,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
+import lombok.Setter;
 
 public class Controller implements Initializable {
   private Song song;
+  @Setter
   private Player player;
-  private Loader loader;
+  @Setter
+  private PlayerSliderBinder playerSliderBinder;
 
   @FXML
   private ListView<Song> listView;
-
   @FXML
   private Slider timelineSlider;
 
@@ -26,8 +28,6 @@ public class Controller implements Initializable {
   public void onPlayButton() {
     if (song != null) {
       player.play(song); // Play the current song
-    } else {
-      System.out.println("No song selected to play.");
     }
   }
 
@@ -43,7 +43,7 @@ public class Controller implements Initializable {
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-    loader = Loader.getInstance();
+    Loader loader = Loader.getInstance();
 
     ObservableList<Song> observableList = FXCollections.observableArrayList();
     List<Song> songs = loader.loadSongsFromJson();
@@ -53,12 +53,12 @@ public class Controller implements Initializable {
 
     listView.setItems(observableList);
     listView.getSelectionModel().selectedItemProperty().addListener((_, _, newSelectedSong) -> {
+      // playerSliderBinder = new PlayerSliderBinder(player, timelineSlider);
       player.play(newSelectedSong); // Play the selected song
+      playerSliderBinder.bindSliderToPlayer(player, timelineSlider); // Bind the slider to the player
       song = newSelectedSong; // Update the current song
     });
+
   }
 
-  public void setPlayer(Player player) {
-    this.player = player;
-  }
 }
