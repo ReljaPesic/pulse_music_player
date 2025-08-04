@@ -6,9 +6,7 @@ import javafx.beans.property.ReadOnlyObjectPropertyBase;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-import lombok.Getter;
 
-@Getter
 public class Player {
   private MediaPlayer mediaPlayer;
 
@@ -80,5 +78,9 @@ public class Player {
     if (mediaPlayer != null) {
       mediaPlayer.setVolume(d);
     }
+  }
+
+  public double getVolume() {
+    return mediaPlayer != null ? mediaPlayer.getVolume() : 0;
   }
 }

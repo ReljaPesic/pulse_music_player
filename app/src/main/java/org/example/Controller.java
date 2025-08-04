@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import lombok.Setter;
@@ -25,6 +26,8 @@ public class Controller implements Initializable {
   private Slider timelineSlider;
   @FXML
   private Slider volumeSlider;
+  @FXML
+  private Label volumeIcon;
 
   @FXML
   public void onPlayButton() {
@@ -67,11 +70,35 @@ public class Controller implements Initializable {
       song = newSelectedSong; // Update the current song
     });
 
+    // volumeController.setupVolumeControl(volumeSlider, player, volumeIcon); //
+    // Setup volume control
+
     volumeSlider.setValue(100);
-    volumeSlider.valueProperty().addListener((_, _, newValue) -> {
-      player.setVolume(newValue.doubleValue() / 100.0); // Set volume based on slider value
+
+    volumeSlider.setOnScroll(event -> {
+      double direction = Math.signum(event.getDeltaY());
+      if (direction > 0) {
+        volumeSlider.setValue(Math.min(volumeSlider.getValue() + 5, 100)); // Increase volume
+      } else if (direction < 0) {
+        volumeSlider.setValue(Math.max(volumeSlider.getValue() - 5, 0)); // Decrease volume
+      }
     });
 
+    volumeSlider.valueProperty().addListener((_, _, newValue) -> {
+      if (newValue.intValue() == 0) {
+        volumeIcon.setText("🔇"); // Mute icon
+      } else if (newValue.intValue() < 30) {
+        volumeIcon.setText("🔈"); // Low volume icon
+      } else if (newValue.intValue() < 70) {
+        volumeIcon.setText("🔉"); // Medium volume icon
+      } else {
+        volumeIcon.setText("🔊"); // High volume icon
+      }
+      player.setVolume(newValue.doubleValue() / 100.0); // Set volume based on slider value
+    });
   }
 
+  public void setup() {
+
+  }
 }

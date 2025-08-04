@@ -80,7 +80,7 @@
                         <Button onAction="#onPauseButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="⏸" />
                         <Button onAction="#onStopButton" layoutX="70.0" layoutY="10.0" mnemonicParsing="false" text="⏹" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label text="🔊" />
+                        <Label fx:id="volumeIcon" text="🔊" />
                         <Slider fx:id="volumeSlider" />
                      </children>
                   </HBox>
