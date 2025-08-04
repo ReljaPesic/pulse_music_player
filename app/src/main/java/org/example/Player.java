@@ -48,21 +48,11 @@ public class Player {
   }
 
   public double getCurrentTime() {
-    if (mediaPlayer != null) {
-      return mediaPlayer.getCurrentTime().toSeconds();
-    }
-    return 0;
+    return mediaPlayer != null ? mediaPlayer.getCurrentTime().toSeconds() : 0;
   }
 
   public double getTotalDuration() {
-    if (mediaPlayer != null) {
-      return mediaPlayer.getTotalDuration().toSeconds();
-    }
-    return 0;
-  }
-
-  public MediaPlayer getMediaPlayer() {
-    return mediaPlayer != null ? mediaPlayer : null;
+    return mediaPlayer != null ? mediaPlayer.getTotalDuration().toSeconds() : 0;
   }
 
   public ReadOnlyObjectProperty<Duration> currentTimeProperty() {
@@ -70,5 +60,15 @@ public class Player {
       return mediaPlayer.currentTimeProperty();
     }
     return null;
+  }
+
+  public void seek(Duration seconds) {
+    if (mediaPlayer != null) {
+      mediaPlayer.seek(seconds);
+    }
+  }
+
+  public boolean isPaused() {
+    return mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PAUSED;
   }
 }

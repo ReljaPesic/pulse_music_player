@@ -10,25 +10,31 @@ public class PlayerSliderBinder {
       slider.setValue(0);
     });
 
-    player.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
+    player.currentTimeProperty().addListener((_, _, newValue) -> {
       if (!slider.isValueChanging()) {
         slider.setValue(newValue.toSeconds());
       }
     });
 
-    slider.setOnMousePressed(event -> {
-      player.pause(); // Pause the player when the slider is pressed
+    slider.setOnMouseDragged(_ -> {
+      player.pause(); // Pause the player while dragging
     });
 
-    slider.setOnMouseReleased(event -> {
+    slider.setOnMousePressed(_ -> {
       double newTime = slider.getValue();
-      player.getMediaPlayer().seek(Duration.seconds(newTime));
+      player.seek(Duration.seconds(newTime));
     });
 
-    slider.valueChangingProperty().addListener((observable, wasChanging, isChanging) -> {
+    slider.setOnMouseReleased(_ -> {
+      double newTime = slider.getValue();
+      player.seek(Duration.seconds(newTime));
+      player.resume();
+    });
+
+    slider.valueChangingProperty().addListener((_, _, isChanging) -> {
       if (!isChanging) {
         double newTime = slider.getValue();
-        player.getMediaPlayer().seek(Duration.seconds(newTime));
+        player.seek(Duration.seconds(newTime));
       }
     });
   }

@@ -26,8 +26,13 @@ public class Controller implements Initializable {
 
   @FXML
   public void onPlayButton() {
-    if (song != null) {
-      player.play(song); // Play the current song
+    if (song == null) {
+      return;
+    } else if (player.isPaused()) {
+      player.resume();
+    } else {
+      player.play(song);
+      playerSliderBinder.bindSliderToPlayer(player, timelineSlider);
     }
   }
 
@@ -53,7 +58,7 @@ public class Controller implements Initializable {
 
     listView.setItems(observableList);
     listView.getSelectionModel().selectedItemProperty().addListener((_, _, newSelectedSong) -> {
-      // playerSliderBinder = new PlayerSliderBinder(player, timelineSlider);
+
       player.play(newSelectedSong); // Play the selected song
       playerSliderBinder.bindSliderToPlayer(player, timelineSlider); // Bind the slider to the player
       song = newSelectedSong; // Update the current song
