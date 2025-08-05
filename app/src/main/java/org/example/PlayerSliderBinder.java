@@ -4,6 +4,14 @@ import javafx.scene.control.Slider;
 import javafx.util.Duration;
 
 public class PlayerSliderBinder {
+  private final Player player;
+  private final Slider slider;
+
+  public PlayerSliderBinder(Player player, Slider slider) {
+    this.player = player;
+    this.slider = slider;
+  }
+
   public void bindSliderToPlayer(Player player, Slider slider) {
     player.setOnReady(() -> {
       slider.setMax(player.getTotalDuration());

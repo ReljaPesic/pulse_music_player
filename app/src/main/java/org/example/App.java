@@ -18,7 +18,6 @@ public class App extends Application {
 
     Controller controller = loader.getController();
     controller.setPlayer(new Player());
-    controller.setPlayerSliderBinder(new PlayerSliderBinder());
 
     stage.setTitle("JavaFX Application");
     stage.setScene(new Scene(root, 800, 600));

@@ -11,14 +11,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
-import lombok.Setter;
 
 public class Controller implements Initializable {
   private Song song;
-  @Setter
   private Player player;
-  @Setter
+
   private PlayerSliderBinder playerSliderBinder;
+  private VolumeController volumeController;
 
   @FXML
   private ListView<Song> listView;
@@ -64,41 +63,19 @@ public class Controller implements Initializable {
 
     listView.setItems(observableList);
     listView.getSelectionModel().selectedItemProperty().addListener((_, _, newSelectedSong) -> {
-
       player.play(newSelectedSong); // Play the selected song
-      playerSliderBinder.bindSliderToPlayer(player, timelineSlider); // Bind the slider to the player
+      playerSliderBinder.bindSliderToPlayer(player, timelineSlider);
       song = newSelectedSong; // Update the current song
-    });
-
-    // volumeController.setupVolumeControl(volumeSlider, player, volumeIcon); //
-    // Setup volume control
-
-    volumeSlider.setValue(100);
-
-    volumeSlider.setOnScroll(event -> {
-      double direction = Math.signum(event.getDeltaY());
-      if (direction > 0) {
-        volumeSlider.setValue(Math.min(volumeSlider.getValue() + 5, 100)); // Increase volume
-      } else if (direction < 0) {
-        volumeSlider.setValue(Math.max(volumeSlider.getValue() - 5, 0)); // Decrease volume
-      }
-    });
-
-    volumeSlider.valueProperty().addListener((_, _, newValue) -> {
-      if (newValue.intValue() == 0) {
-        volumeIcon.setText("🔇"); // Mute icon
-      } else if (newValue.intValue() < 30) {
-        volumeIcon.setText("🔈"); // Low volume icon
-      } else if (newValue.intValue() < 70) {
-        volumeIcon.setText("🔉"); // Medium volume icon
-      } else {
-        volumeIcon.setText("🔊"); // High volume icon
-      }
-      player.setVolume(newValue.doubleValue() / 100.0); // Set volume based on slider value
     });
   }
 
-  public void setup() {
-
+  public void setPlayer(Player player) {
+    this.player = player;
+    if (timelineSlider != null) {
+      this.playerSliderBinder = new PlayerSliderBinder(player, timelineSlider);
+    }
+    if (volumeSlider != null && volumeIcon != null) {
+      this.volumeController = new VolumeController(volumeSlider, player, volumeIcon);
+    }
   }
 }
